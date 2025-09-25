@@ -1,103 +1,169 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { Users, MessageSquare, Bot, Edit, Send } from "lucide-react";
+import { Avatar } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
+export default function TelegramClone() {
+  const [chats] = useState([
+    { id: 1, profile: "https://mui.com/static/images/avatar/1.jpg", name: "fn3", msg: "salom", time: "2:46PM" },
+    { id: 2, profile: "https://mui.com/static/images/avatar/2.jpg", name: "FullStack FN3", msg: "salom", time: "2:45PM" },
+    { id: 3, profile: "https://mui.com/static/images/avatar/3.jpg", name: "Najot Ta'lim", msg: "salom", time: "2:44PM" },
+    { id: 4, profile: "https://mui.com/static/images/avatar/1.jpg", name: "Bot", msg: "salom", time: "2:34PM" },
+    { id: 5, profile: "https://mui.com/static/images/avatar/3.jpg", name: "Nasriddinov", msg: "salom", time: "2:11PM" },
+    { id: 6, profile: "https://mui.com/static/images/avatar/3.jpg", name: "17", msg: "salom", time: "1:23PM" },
+  ]);
+
+  const users = [
+    { id: 1, name: "User 1", img: "https://mui.com/static/images/avatar/1.jpg" },
+    { id: 2, name: "User 2", img: "https://mui.com/static/images/avatar/2.jpg" },
+    { id: 3, name: "User 3", img: "https://mui.com/static/images/avatar/3.jpg" },
+    { id: 4, name: "User 4", img: "https://mui.com/static/images/avatar/3.jpg" },
+  ];
+
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [messages, setMessages] = useState({});
+  const [inputMessage, setInputMessage] = useState("");
+
+  const handleSend = () => {
+    if (!inputMessage.trim() || !selectedChat) return;
+
+    const newMessage = {
+      id: Date.now(),
+      text: inputMessage,
+      sender: "me",
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat.id]: [...(prev[selectedChat.id] || []), newMessage],
+    }));
+
+    setInputMessage("");
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex h-screen bg-gray-900 text-gray-200">
+      <div className="w-[350px] bg-gray-800 flex">
+        <div className="w-16 bg-gray-700 flex flex-col items-center py-4 space-y-6">
+          <button><span className="text-xl">≡</span></button>
+          <button className="relative">
+            <MessageSquare size={22} />
+          </button>
+          <Users size={22} />
+          <Bot size={22} />
+          <Edit size={22} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="flex-1 flex flex-col">
+          <div className="p-3 border-b border-gray-700 flex items-center">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-[250px] bg-gray-700 text-sm px-3 py-2 rounded-md focus:outline-none"
+            />
+          </div>
+
+          <div style={{ width: 250 }}>
+            <Swiper spaceBetween={10} slidesPerView={3}>
+              {users.map((user) => (
+                <SwiperSlide key={user.id}>
+                  <div style={{ textAlign: "center" }}>
+                    <Avatar
+                      alt={user.name}
+                      src={user.img}
+                      sx={{ width: 70, height: 70, margin: "auto" }}
+                    />
+                    <p style={{ fontSize: 13, marginTop: 5 }}>{user.name}</p>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          <div className="flex-1 w-[285px] overflow-y-auto">
+            {chats.map(chat => (
+              <div
+                key={chat.id}
+                onClick={() => setSelectedChat(chat)}
+                className="flex items-center justify-between px-4 py-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <Avatar src={chat.profile} alt={chat.name} />
+                  <div>
+                    <p className="font-medium">{chat.name}</p>
+                    <p className="text-xs text-gray-400 truncate w-40">{chat.msg}</p>
+                  </div>
+                </div>
+                <div className="mr-[50px]">
+                  <p className="text-xs text-gray-400">{chat.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 bg-gray-900 relative">
+        {selectedChat ? (
+          <div className="h-full flex flex-col">
+            <div className="flex justify-between items-center border-b border-gray-700 p-4">
+              <div className="flex items-center gap-3">
+                <Avatar src={selectedChat.profile} alt={selectedChat.name} />
+                <h2 className="text-lg font-semibold">{selectedChat.name}</h2>
+              </div>
+              <button onClick={() => setSelectedChat(null)} className="text-gray-400 hover:text-white">
+                ✕
+              </button>
+            </div>
+
+            <div className="flex-1 p-4 overflow-y-auto space-y-3">
+              {(messages[selectedChat.id] || []).map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`px-4 py-2 rounded-2xl max-w-xs ${msg.sender === "me"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-700 text-gray-200"
+                      }`}
+                  >
+                    <p>{msg.text}</p>
+                    <p className="text-xs text-gray-300 text-right">{msg.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-4 border-t border-gray-700 flex items-center gap-2">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                placeholder="Xabar yozing..."
+                className="flex-1 bg-gray-700 px-4 py-2 rounded-full focus:outline-none"
+              />
+              <button
+                onClick={handleSend}
+                className="p-2 bg-blue-600 rounded-full hover:bg-blue-700"
+              >
+                <Send size={20} />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-500">
+            Chat tanlang
+          </div>
+        )}
+      </div>
     </div>
   );
 }
